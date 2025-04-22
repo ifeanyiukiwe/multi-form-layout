@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@font-face {
+  font-family: "Ubuntu";
+  src: url("./assets/fonts/Ubuntu-Medium.ttf") format("truetype");
+  font-weight: normal;
+}
+body {
+  font-family: "Ubuntu", sans-serif;
+  background-color: #eef5ff;
+}
+@layer components {
+  .unorderd {
+    @apply flex list-none;
+  }
+  .side {
+    @apply bg-[url('./assets/images/bg-sidebar-desktop.svg')];
+  }
+  .list {
+    @apply flex flex-col;
+  }
+  .list small {
+    @apply text-[10px] text-gray-300;
+  }
+  .list p {
+    @apply text-[16px] text-white;
+  }
+  .back {
+    @apply bg-[#012a5f] py-3 px-8 cursor-pointer text-white rounded-lg fixed bottom-[0] sm:bottom-6 left-[50px] sm:left-[450px];
+  }
+  .next {
+    @apply bg-[#012a5f] py-3 px-8 cursor-pointer  text-white rounded-lg fixed bottom-[0] sm:bottom-6 right-[50px] sm:right-[200px];
+  }
+}
+
+@layer base {
+  input {
+    @apply border-2 border-gray-400 mt-1 rounded-lg p-1.5 w-[260px] sm:w-[450px];
+  }
+  input::placeholder {
+    @apply text-xs text-gray-500;
+  }
+}
