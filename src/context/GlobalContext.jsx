@@ -24,14 +24,27 @@ const GlobalProvider = ({ children }) => {
     { number: 5, path: "/thanks" },
   ];
 
+  //   const getTotal = () => {
+  //     const addonsTotal = selectedAddons.reduce((total, addon) => {
+  //       return total + Number(addon.price);
+  //     }, 0);
+
+  //     const planPrice = Number(activePlan?.price || 0);
+
+  //     return addonsTotal + planPrice;
+  //   };
   const getTotal = () => {
+    const multiplier = billingType === "yearly" ? 12 : 1;
+
     const addonsTotal = selectedAddons.reduce((total, addon) => {
-      return total + Number(addon.price);
+      return total + Number(addon.price) * multiplier;
     }, 0);
 
-    const planPrice = Number(activePlan?.price || 0);
+    const planPrice = Number(activePlan?.price || 0) * multiplier;
 
-    return addonsTotal + planPrice;
+    return `$${addonsTotal + planPrice}/${
+      billingType === "yearly" ? "yr" : "mo"
+    }`;
   };
 
   const allAddOns = [

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
+import Nav from "./Nav";
 
 const Summary = () => {
   const {
@@ -48,7 +49,7 @@ const Summary = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative flex flex-col lg:flex-row w-[90%] max-w-5xl h-[600px] p-5 bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Sidebar */}
-        <div className="w-full lg:w-[30%] h-[60%] lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center text-white p-6 z-0">
+        {/* <div className="w-full lg:w-[30%] h-[60%] lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center text-white p-6 z-0">
           <ul className="flex flex-row lg:flex-col gap-4 items-center lg:items-start">
             {steps.map((step) => (
               <li
@@ -74,10 +75,11 @@ const Summary = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Nav />
 
         {/* Main Content */}
-        <div className="lg:w-[70%] w-full p-8 px-10 sm:px-20 absolute top-[20%] lg:top-0 bg-white rounded-md mx-auto lg:relative z-10">
+        <div className="lg:w-[70%] h-full w-full p-8 px-10 sm:px-20 absolute top-[20%] left-0 right-0 z-10 bg-white rounded-md mx-auto lg:relative lg:top-0">
           <div>
             <h1 className="text-[#012a5f] font-bold text-[24px] sm:text-[30px]">
               Finishing Up
@@ -113,7 +115,7 @@ const Summary = () => {
                 key={index}
                 className="flex justify-between items-center p-5 border-b border-gray-300"
               >
-                <small className="text-xs text-gray-500">{addon.name}</small>
+                <small className="text-xs text-gray-500">{addon.tag}</small>
                 <span className="text-[#012a5f] font-bold text-sm">
                   {formatPrice(addon.price)}
                 </span>

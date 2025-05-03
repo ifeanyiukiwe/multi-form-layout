@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { GlobalContext } from "../context/GlobalContext";
-
+import Nav from "./Nav";
 const Home = () => {
   const { activeStep, goToNextStep, goToStep, userInfo, setUserInfo } =
     useContext(GlobalContext);
@@ -30,7 +30,7 @@ const Home = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="flex flex-col lg:flex-row w-[90%] max-w-5xl h-[600px] p-5 bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="side lg:w-[30%] w-full bg-cover rounded-lg bg-center flex flex-col sm:flex-row p-6 text-white">
+        {/* <div className="side lg:w-[30%] w-full bg-cover rounded-lg bg-center flex flex-col sm:flex-row p-6 text-white">
           <ul className="flex flex-row space-6 items-center gap-4 lg:flex-col lg:items-start">
             {steps.map((step) => (
               <li
@@ -56,10 +56,11 @@ const Home = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Nav />
 
         {/* Formik Form */}
-        <div className="lg:w-[70%] w-full p-8">
+        <div className="lg:w-[70%] h-full w-full p-8 px-10 sm:px-20 absolute top-[20%] left-0 right-0 z-10 bg-white rounded-md mx-auto lg:relative lg:top-0">
           <h2 className="text-2xl font-bold mb-4">Personal Info</h2>
           <p className="text-gray-600 mb-6">
             Please provide your name, email address, and phone number.

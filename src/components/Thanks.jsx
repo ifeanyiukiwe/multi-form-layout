@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../context/GlobalContext";
 import thanks from "../assets/images/icon-thank-you.svg";
+import Nav from "./Nav";
 
 const Thanks = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Thanks = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative flex flex-col lg:flex-row w-[90%] max-w-5xl h-[600px] bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="w-screen lg:w-[30%] h-[60%] lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
+        {/* <div className="w-screen lg:w-[30%] h-[60%] lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
           <ul className="flex flex-row items-center gap-4 lg:flex-col lg:items-start">
             {steps.slice(0, 4).map((step) => (
               <li
@@ -57,7 +58,8 @@ const Thanks = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Nav />
 
         <div
           className="lg:w-[70%] w-full p-8 flex flex-col justify-center items-center 

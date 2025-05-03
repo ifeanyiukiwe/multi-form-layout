@@ -6,6 +6,7 @@ import advanced from "../assets/images/icon-advanced.svg";
 import pro from "../assets/images/icon-pro.svg";
 import back from "../assets/images/left-chevron.png";
 import front from "../assets/images/chevron.png";
+import Nav from "./Nav";
 
 const About = () => {
   const {
@@ -43,7 +44,7 @@ const About = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative flex flex-col lg:flex-row w-[90%] p-5 max-w-5xl h-[600px] bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="w-screen lg:w-[30%] h-[60%] rounded-lg lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
+        {/* <div className="w-screen lg:w-[30%] h-[60%] rounded-lg lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
           <ul className="flex flex-row items-center gap-4 lg:flex-col lg:items-start">
             {steps.slice(0, 4).map((step) => (
               <li
@@ -72,7 +73,8 @@ const About = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Nav />
 
         <div className="lg:w-[70%] h-full w-full p-8 px-10 sm:px-20 absolute top-[20%] left-0 right-0 z-10 bg-white rounded-md mx-auto lg:relative lg:top-0">
           <div>

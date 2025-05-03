@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
-
+import Nav from "./Nav";
 const AddsOn = () => {
   const {
     activeStep,
@@ -37,7 +37,7 @@ const AddsOn = () => {
       const isAlreadySelected = prevSelected.some((pkg) => pkg.id === item.id);
 
       if (isAlreadySelected) {
-        return prevSelected.filter((pkg) => pkg.id !== item.id); 
+        return prevSelected.filter((pkg) => pkg.id !== item.id);
       } else {
         return [...prevSelected, item];
       }
@@ -50,7 +50,7 @@ const AddsOn = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative flex flex-col lg:flex-row w-[90%] p-5 max-w-5xl h-[600px] bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Sidebar */}
-        <div className="w-screen lg:w-[30%] h-[60%] rounded-lg lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
+        {/* <div className="w-screen lg:w-[30%] h-[60%] rounded-lg lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
           <ul className="flex flex-row items-center gap-4 lg:flex-col lg:items-start">
             {steps.slice(0, 4).map((step) => (
               <li
@@ -79,7 +79,8 @@ const AddsOn = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
+        <Nav />
 
         {/* Main Content */}
         <div className="lg:w-[70%] h-full w-full p-8 px-10 sm:px-20 absolute top-[20%] left-0 right-0 z-10 bg-white rounded-md mx-auto lg:relative lg:top-0">
@@ -135,7 +136,7 @@ const AddsOn = () => {
             return (
               <ul
                 key={pkg.id}
-                className={`border rounded-lg px-1.5 py-2 sm:p-4 sm:w-[500px] w-[295px] cursor-pointer transition-all duration-200 ${
+                className={`mb-4 border rounded-lg px-1.5 py-2 sm:p-4 sm:w-[500px] w-[295px] cursor-pointer transition-all duration-200 ${
                   isSelected
                     ? "bg-purple-100 border-[#6259ff]"
                     : "border-gray-300"
