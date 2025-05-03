@@ -8,14 +8,16 @@ const Summary = () => {
     activePlan,
     billingType,
     selectedAddons,
-    totalCost,
     goToNextStep,
     goToPreviousStep,
-    getTotalCost,
-    newTotalCost,
+    // newTotalCost,
+    getTotal,
   } = useContext(GlobalContext);
 
-  console.log(newTotalCost);
+  // console.log(newTotalCost);
+
+  console.log("Total Price (Plan + Add-ons):", getTotal());
+
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
 
@@ -39,18 +41,8 @@ const Summary = () => {
   const formatPlanPrice = (price) =>
     billingType === "yearly" ? `$${price * 12}/yr` : `$${price}`;
 
-  const formatTotal = (price) =>
-    billingType === "yearly" ? `$${price}/yr` : `$${price}`;
-
-  const calculatedTotal = () => {
-    const planPrice = activePlan?.price || 0;
-    const addonsPrice = selectedAddons.reduce(
-      (sum, addon) => sum + addon.price,
-      0
-    );
-    const monthlyTotal = planPrice + addonsPrice;
-    return billingType === "yearly" ? monthlyTotal * 12 : monthlyTotal;
-  };
+  // const formatTotal = (price) =>
+  //   billingType === "yearly" ? `$${price}/yr` : `$${price}`;
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -132,7 +124,7 @@ const Summary = () => {
             <li className="flex justify-between items-center p-5 bg-white rounded-b-lg">
               <small className="text-xs text-gray-500">Total</small>
               <span className="text-[#6259ff] font-bold text-sm">
-                {formatTotal(newTotalCost)}
+                {`Total: ${getTotal()}`}
               </span>
             </li>
           </ul>

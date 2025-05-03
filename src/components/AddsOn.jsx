@@ -3,33 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 
 const AddsOn = () => {
-  const { activeStep, setActiveStep, activePackage, setActivePackage, steps } =
-    useContext(GlobalContext);
+  const {
+    activeStep,
+    setActiveStep,
+    selectedAddons,
+    setSelectedAddons,
+    steps,
+    allAddOns,
+  } = useContext(GlobalContext);
 
   const navigate = useNavigate();
-
-  console.log("activepackage:", activePackage);
-
-  const packages = [
-    {
-      id: 1,
-      tag: "Online Service",
-      details: "Access to multiplayer games",
-      price: 1,
-    },
-    {
-      id: 2,
-      tag: "Large Storage",
-      details: "Extra 1 TB of cloud save",
-      price: 2,
-    },
-    {
-      id: 3,
-      tag: "Customizable Profile",
-      details: "Custom Theme on your profile",
-      price: 2,
-    },
-  ];
 
   const handleNext = () => {
     const nextStep = activeStep + 1;
@@ -46,22 +29,22 @@ const AddsOn = () => {
   };
 
   // const togglePackage = (item) => {
-  //   // Toggle package in the global state
-  //   setActivePackage((item) =>
-  //     prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-  //   );
+  //   setSelectedAddons(item);
   // };
 
-  // const togglePackage = (item) => {
-  //   setActivePackage(item);
-  // };
   const togglePackage = (item) => {
-    setActivePackage((prev) =>
-      prev.includes(item.id)
-        ? prev.filter((id) => id !== item.id)
-        : [...prev, item.id]
-    );
+    setSelectedAddons((prevSelected) => {
+      const isAlreadySelected = prevSelected.some((pkg) => pkg.id === item.id);
+
+      if (isAlreadySelected) {
+        return prevSelected.filter((pkg) => pkg.id !== item.id); 
+      } else {
+        return [...prevSelected, item];
+      }
+    });
   };
+
+  console.log("Addons array:", selectedAddons);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -110,12 +93,12 @@ const AddsOn = () => {
           </div>
 
           {/* Packages */}
-          <div className="flex flex-col gap-4 mt-6">
-            {packages.map((pkg) => (
+          {/* <div className="flex flex-col gap-4 mt-6">
+            {allAddOns.map((pkg) => (
               <ul
                 key={pkg.id}
                 className={`border rounded-lg px-1.5 py-2 sm:p-4 sm:w-[500px] w-[295px] cursor-pointer transition-all duration-200 ${
-                  activePackage.includes(pkg.id)
+                  selectedAddons.includes(pkg.id)
                     ? "bg-purple-100 border-[#6259ff]"
                     : "border-gray-300"
                 }`}
@@ -123,13 +106,13 @@ const AddsOn = () => {
                 <li className="flex justify-between items-start gap-4">
                   <input
                     type="checkbox"
-                    checked={activePackage.includes(pkg.id)}
+                    // checked={selectedAddons.includes(pkg.id)}
                     onChange={() => togglePackage(pkg)}
                     className="mt-1 w-4 accent-[#6259ff]"
                   />
                   <div className="flex-1">
                     <h2
-                      onChange={() => togglePackage(pkg.id)}
+                      onChange={() => togglePackage(pkg)}
                       className="text-[#012a5f] font-bold text-[14px] sm:text-[16px]"
                     >
                       {pkg.tag}
@@ -142,7 +125,42 @@ const AddsOn = () => {
                 </li>
               </ul>
             ))}
-          </div>
+          </div> */}
+
+          {allAddOns.map((pkg) => {
+            const isSelected = selectedAddons.some(
+              (item) => item.id === pkg.id
+            );
+
+            return (
+              <ul
+                key={pkg.id}
+                className={`border rounded-lg px-1.5 py-2 sm:p-4 sm:w-[500px] w-[295px] cursor-pointer transition-all duration-200 ${
+                  isSelected
+                    ? "bg-purple-100 border-[#6259ff]"
+                    : "border-gray-300"
+                }`}
+              >
+                <li className="flex justify-between items-start gap-4">
+                  <input
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => togglePackage(pkg)}
+                    className="mt-1 w-4 accent-[#6259ff]"
+                  />
+                  <div className="flex-1">
+                    <h2 className="text-[#012a5f] font-bold text-[14px] sm:text-[16px]">
+                      {pkg.tag}
+                    </h2>
+                    <p className="text-[12px] text-gray-500">{pkg.details}</p>
+                  </div>
+                  <span className="text-[#6259ff] text-[10px] sm:text-[12px] whitespace-nowrap">
+                    {`+${pkg.price}/mon`}
+                  </span>
+                </li>
+              </ul>
+            );
+          })}
 
           <div className="flex justify-between w-full mt-10">
             <button
