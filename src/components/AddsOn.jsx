@@ -1,37 +1,33 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 
 const AddsOn = () => {
-  const [activeStep, setActiveStep] = useState(3);
-  const [activePackage, setActivePackage] = useState([]);
+  const { activeStep, setActiveStep, activePackage, setActivePackage, steps } =
+    useContext(GlobalContext);
+
   const navigate = useNavigate();
 
-  const steps = [
-    { number: 1, label: "Your Info", path: "/" },
-    { number: 2, label: "Select Plan", path: "/about" },
-    { number: 3, label: "ADD-ONS", path: "/addons" },
-    { number: 4, label: "Summary", path: "/summary" },
-    { number: 5, label: "Thanks", path: "/thanks" },
-  ];
+  console.log("activepackage:", activePackage);
 
   const packages = [
     {
       id: 1,
       tag: "Online Service",
       details: "Access to multiplayer games",
-      price: "1/mo",
+      price: 1,
     },
     {
       id: 2,
       tag: "Large Storage",
       details: "Extra 1 TB of cloud save",
-      price: "2/mo",
+      price: 2,
     },
     {
       id: 3,
       tag: "Customizable Profile",
       details: "Custom Theme on your profile",
-      price: "2/mo",
+      price: 2,
     },
   ];
 
@@ -49,9 +45,21 @@ const AddsOn = () => {
     if (prevRoute) navigate(prevRoute);
   };
 
-  const togglePackage = (id) => {
+  // const togglePackage = (item) => {
+  //   // Toggle package in the global state
+  //   setActivePackage((item) =>
+  //     prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+  //   );
+  // };
+
+  // const togglePackage = (item) => {
+  //   setActivePackage(item);
+  // };
+  const togglePackage = (item) => {
     setActivePackage((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(item.id)
+        ? prev.filter((id) => id !== item.id)
+        : [...prev, item.id]
     );
   };
 
@@ -116,17 +124,20 @@ const AddsOn = () => {
                   <input
                     type="checkbox"
                     checked={activePackage.includes(pkg.id)}
-                    onChange={() => togglePackage(pkg.id)}
+                    onChange={() => togglePackage(pkg)}
                     className="mt-1 w-4 accent-[#6259ff]"
                   />
                   <div className="flex-1">
-                    <h2 className="text-[#012a5f] font-bold text-[14px] sm:text-[16px]">
+                    <h2
+                      onChange={() => togglePackage(pkg.id)}
+                      className="text-[#012a5f] font-bold text-[14px] sm:text-[16px]"
+                    >
                       {pkg.tag}
                     </h2>
                     <p className="text-[12px] text-gray-500">{pkg.details}</p>
                   </div>
                   <span className="text-[#6259ff] text-[10px] sm:text-[12px] whitespace-nowrap">
-                    +${pkg.price}
+                    {`+${pkg.price}/mon`}
                   </span>
                 </li>
               </ul>

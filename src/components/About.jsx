@@ -1,5 +1,6 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 import arcade from "../assets/images/icon-arcade.svg";
 import advanced from "../assets/images/icon-advanced.svg";
 import pro from "../assets/images/icon-pro.svg";
@@ -7,23 +8,22 @@ import back from "../assets/images/left-chevron.png";
 import front from "../assets/images/chevron.png";
 
 const About = () => {
-  const [activeStep, setActiveStep] = useState(2);
-  const [activePlan, setActivePlan] = useState(null);
-  const [billingType, setBillingType] = useState("monthly");
+  const {
+    activeStep,
+    setActiveStep,
+    activePlan,
+    setActivePlan,
+    billingType,
+    setBillingType,
+    steps,
+  } = useContext(GlobalContext);
+
   const navigate = useNavigate();
 
-  const steps = [
-    { number: 1, label: "Your Info", path: "/" },
-    { number: 2, label: "Select Plan", path: "/about" },
-    { number: 3, label: "ADD-ONS", path: "/addons" },
-    { number: 4, label: "Summary", path: "/summary" },
-    { number: 5, label: "Thanks", path: "/thanks" },
-  ];
-
   const choices = [
-    { id: 1, img: arcade, name: "Arcade", price: "9/mo" },
-    { id: 2, img: advanced, name: "Advanced", price: "12/mo" },
-    { id: 3, img: pro, name: "Pro", price: "15/mo" },
+    { id: 1, img: arcade, name: "Arcade", price: "9" },
+    { id: 2, img: advanced, name: "Advanced", price: "12" },
+    { id: 3, img: pro, name: "Pro", price: 15 },
   ];
 
   const handleNext = () => {
@@ -88,9 +88,9 @@ const About = () => {
             {choices.map((choice) => (
               <ul
                 key={choice.id}
-                onClick={() => setActivePlan(choice.id)}
+                onClick={() => setActivePlan(choice)}
                 className={`cursor-pointer border w-full lg:w-[150px]  border-[#6259ff] flex flex-col rounded-lg transition-all duration-200 ${
-                  activePlan === choice.id ? "bg-purple-100" : "bg-white"
+                  activePlan.id === choice.id ? "bg-purple-100" : "bg-white"
                 }`}
               >
                 <li className="flex flex-col items-start p-2 sm:p-8">
@@ -103,7 +103,7 @@ const About = () => {
                     {choice.name}
                   </p>
                   <small className="text-[10px] text-gray-500 font-normal">
-                    ${choice.price}
+                    {`${choice.price}/mon`}
                   </small>
                 </li>
               </ul>

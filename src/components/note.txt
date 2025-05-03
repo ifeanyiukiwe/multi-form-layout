@@ -1,0 +1,5 @@
+Onclick of next stroe the values inputted on the form in a global state when the user clcicks next
+make sure the selected plans are stored in a state and rendered on the summary page
+even after clicking next the selected plan should still be active
+onclick of the change on summary page you can go back to the select plan page
+setup a modal after clicking confirm button which ask if the user is wnats to proceed or crosscheck 

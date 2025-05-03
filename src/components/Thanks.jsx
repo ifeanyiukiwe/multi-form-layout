@@ -1,25 +1,28 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 import thanks from "../assets/images/icon-thank-you.svg";
 
 const Thanks = () => {
   const navigate = useNavigate();
 
-  const steps = [
-    { number: 1, label: "Your Info", path: "/" },
-    { number: 2, label: "Select Plan", path: "/about" },
-    { number: 3, label: "ADD-ONS", path: "/addons" },
-    { number: 4, label: "Summary", path: "/summary" },
-    { number: 5, label: "Thanks", path: "/thanks" },
-  ];
+  // Access the global state values and setter functions
+  const {
+    activeStep,
+    setActiveStep,
+    userInfo,
+    goToNextStep,
+    goToPreviousStep,
+    steps,
+  } = useContext(GlobalContext);
 
-  const [activeStep, setActiveStep] = useState(5);
+  // Sync the local state with the global state
+  useEffect(() => {
+    setActiveStep(activeStep);
+  }, [activeStep, setActiveStep]);
 
   const handleBack = () => {
-    const prevStep = activeStep - 1;
-    setActiveStep(prevStep);
-    const prevRoute = steps.find((step) => step.number === prevStep)?.path;
-    if (prevRoute) navigate(prevRoute);
+    goToPreviousStep();
   };
 
   return (
@@ -64,6 +67,10 @@ const Thanks = () => {
           <img src={thanks} alt="thank-you-mark" width="40px" />
           <div className="text-center mt-5">
             <h1 className="text-2xl font-bold mb-2">Thank You!</h1>
+            <h6 className="text-[12px] font-extralight my-2">
+              {userInfo.name} | {userInfo.email} | {userInfo.phone}
+            </h6>
+
             <small className="text-gray-400 block max-w-sm">
               Thanks for confirming your subscription! We hope you have fun
               using our platform. If you ever need support, please feel free to

@@ -1,46 +1,71 @@
+import { useContext, useState } from "react";
+import { GlobalContext } from "../context/GlobalContext";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const Summary = () => {
-  const [activeStep, setActiveStep] = useState(4);
+  const {
+    activeStep,
+    activePlan,
+    billingType,
+    selectedAddons,
+    totalCost,
+    goToNextStep,
+    goToPreviousStep,
+    getTotalCost,
+    newTotalCost,
+  } = useContext(GlobalContext);
+
+  console.log(newTotalCost);
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const steps = [
     { number: 1, label: "Your Info", path: "/" },
     { number: 2, label: "Select Plan", path: "/about" },
-    { number: 3, label: "ADD-ONS", path: "/addons" },
+    { number: 3, label: "Add-Ons", path: "/addons" },
     { number: 4, label: "Summary", path: "/summary" },
-    { number: 5, label: "Thanks", path: "/thanks" },
   ];
-  const handleNext = () => {
-    const nextStep = activeStep + 1;
-    setActiveStep(nextStep);
-    const nextRoute = steps.find((step) => step.number === nextStep)?.path;
-    if (nextRoute) navigate(nextRoute);
+
+  const handleBack = () => goToPreviousStep();
+
+  const confirmAndProceed = () => {
+    goToNextStep();
+    navigate("/thanks");
   };
 
-  const handleBack = () => {
-    const prevStep = activeStep - 1;
-    setActiveStep(prevStep);
-    const prevRoute = steps.find((step) => step.number === prevStep)?.path;
-    if (prevRoute) navigate(prevRoute);
+  const formatPrice = (price) =>
+    billingType === "yearly" ? `+$${price * 12}/yr` : `+$${price}`;
+
+  const formatPlanPrice = (price) =>
+    billingType === "yearly" ? `$${price * 12}/yr` : `$${price}`;
+
+  const formatTotal = (price) =>
+    billingType === "yearly" ? `$${price}/yr` : `$${price}`;
+
+  const calculatedTotal = () => {
+    const planPrice = activePlan?.price || 0;
+    const addonsPrice = selectedAddons.reduce(
+      (sum, addon) => sum + addon.price,
+      0
+    );
+    const monthlyTotal = planPrice + addonsPrice;
+    return billingType === "yearly" ? monthlyTotal * 12 : monthlyTotal;
   };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="relative flex flex-col lg:flex-row w-[90%] max-w-5xl h-[600px] p-5 bg-white shadow-lg rounded-lg overflow-hidden">
-        <div className="w-screen lg:w-[30%] h-[60%] lg:h-auto rounded-lg absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center bg-no-repeat text-white z-0 p-6">
-          <ul className="flex flex-row items-center gap-4 lg:flex-col lg:items-start">
-            {steps.slice(0, 4).map((step) => (
+        {/* Sidebar */}
+        <div className="w-full lg:w-[30%] h-[60%] lg:h-auto absolute lg:relative top-0 left-0 bg-[url('./assets/images/bg-sidebar-mobile.svg')] bg-cover bg-center text-white p-6 z-0">
+          <ul className="flex flex-row lg:flex-col gap-4 items-center lg:items-start">
+            {steps.map((step) => (
               <li
                 key={step.number}
                 className="flex items-center space-x-4 cursor-pointer"
-                onClick={() => {
-                  setActiveStep(step.number);
-                  navigate(step.path);
-                }}
+                onClick={() => navigate(step.path)}
               >
                 <span
-                  className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold transition-all duration-300 ${
+                  className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-bold ${
                     activeStep === step.number
                       ? "bg-blue-200 text-blue-900"
                       : "bg-transparent border border-white"
@@ -58,79 +83,107 @@ const Summary = () => {
             ))}
           </ul>
         </div>
-        <div className="lg:w-[70%] h-full w-full p-8 px-10 sm:px-20 absolute top-[20%] left-0 right-0 z-10 bg-white rounded-md mx-auto lg:relative lg:top-0">
+
+        {/* Main Content */}
+        <div className="lg:w-[70%] w-full p-8 px-10 sm:px-20 absolute top-[20%] lg:top-0 bg-white rounded-md mx-auto lg:relative z-10">
           <div>
-            <h1 className="text-[#012a5f] font-bold text-[10px] sm:text-[30px]">
+            <h1 className="text-[#012a5f] font-bold text-[24px] sm:text-[30px]">
               Finishing Up
             </h1>
-            <small className="text-[10px] text-gray-500 font-normal">
-              Double-check everything looking okay before confirming.
+            <small className="text-[10px] text-gray-500">
+              Double-check everything before confirming.
             </small>
           </div>
-          <div>
-            <ul className="bg-gray-200 rounded-lg rounded-b-lg ">
-              <li className="flex justify-between items-center p-5">
-                <div>
-                  <p className="text-[#012a5f] font-bold text-[10px] sm:text-[10px]">
-                    Arcade (Monthly)
-                  </p>
-                  <small className="underline text-[10px] text-gray-500 font-normal">
-                    change
-                  </small>
-                </div>
-                <span className="text-[#012a5f] font-bold text-[10px] sm:text-[10px]">
-                  $9/mo
+
+          {/* Summary Card */}
+          <ul className="bg-gray-200 rounded-lg mt-5">
+            {/* Plan */}
+            <li className="flex justify-between items-center p-5 border-b border-gray-300">
+              <div>
+                <p className="text-[#012a5f] font-bold text-sm">
+                  {activePlan?.name} ({billingType})
+                </p>
+                <button
+                  onClick={() => navigate("/about")}
+                  className="underline text-xs text-gray-500 mt-1"
+                >
+                  Change
+                </button>
+              </div>
+              <span className="text-[#012a5f] font-bold text-sm">
+                {formatPlanPrice(activePlan?.price || 0)}
+              </span>
+            </li>
+
+            {/* Add-ons */}
+            {selectedAddons.map((addon, index) => (
+              <li
+                key={index}
+                className="flex justify-between items-center p-5 border-b border-gray-300"
+              >
+                <small className="text-xs text-gray-500">{addon.name}</small>
+                <span className="text-[#012a5f] font-bold text-sm">
+                  {formatPrice(addon.price)}
                 </span>
               </li>
-              <li className="flex justify-between items-center p-5">
-                <div>
-                  <small className=" text-[10px] text-gray-500 font-normal">
-                    Online Service
-                  </small>
-                </div>
-                <span className="text-[#012a5f] font-bold text-[10px] sm:text-[10px]">
-                  +$1/mo
-                </span>
-              </li>
-              <li className="flex justify-between items-center p-5">
-                <div>
-                  <small className=" text-[10px] text-gray-500 font-normal">
-                    Larger Storage
-                  </small>
-                </div>
-                <span className="text-[#012a5f] font-bold text-[10px] sm:text-[10px]">
-                  +$2/mo
-                </span>
-              </li>
-              <li className="flex justify-between items-center p-5 bg-white">
-                <div>
-                  <small className=" text-[10px] text-gray-500 font-normal">
-                    Total (per month)
-                  </small>
-                </div>
-                <span className="text-[#6259ff] font-bold text-[10px] sm:text-[10px]">
-                  +$12/mo
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div className="flex justify-between w-full mt-10">
+            ))}
+
+            {/* Total */}
+            <li className="flex justify-between items-center p-5 bg-white rounded-b-lg">
+              <small className="text-xs text-gray-500">Total</small>
+              <span className="text-[#6259ff] font-bold text-sm">
+                {formatTotal(newTotalCost)}
+              </span>
+            </li>
+          </ul>
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between mt-10">
             <button
               onClick={handleBack}
               disabled={activeStep === 1}
-              className="back fixed bottom-10 sm:bottom-6 left-[50px] sm:left-[510px] bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-white hover:text-[#012a5f] disabled:opacity-50"
+              className="fixed bottom-10 sm:bottom-6 left-[50px] sm:left-[510px] bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-white hover:text-[#012a5f] disabled:opacity-50"
             >
               Go Back
             </button>
             <button
-              onClick={handleNext}
-              className="next fixed bottom-10 sm:bottom-6 right-[50px] sm:right-[200px] bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              onClick={() => setShowModal(true)}
+              className="fixed bottom-10 sm:bottom-6 right-[50px] sm:right-[200px] bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
             >
               Confirm
             </button>
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white p-8 rounded-lg shadow-md text-center max-w-md w-full">
+            <h2 className="text-lg font-semibold mb-4 text-[#012a5f]">
+              Confirm Your Selections
+            </h2>
+            <p className="text-sm text-gray-600 mb-6">
+              Are you sure about your selections? Click "Yes" to continue or
+              "No" to review.
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={confirmAndProceed}
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+              >
+                Yes
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
