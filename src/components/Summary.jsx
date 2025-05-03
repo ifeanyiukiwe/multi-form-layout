@@ -136,13 +136,13 @@ const Summary = () => {
             <button
               onClick={handleBack}
               disabled={activeStep === 1}
-              className="fixed bottom-10 sm:bottom-6 left-[50px] sm:left-[510px] bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-white hover:text-[#012a5f] disabled:opacity-50"
+              className="cursor-pointer fixed bottom-10 sm:bottom-6 left-[50px] sm:left-[510px] bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-white hover:text-[#012a5f] disabled:opacity-50"
             >
               Go Back
             </button>
             <button
               onClick={() => setShowModal(true)}
-              className="fixed bottom-10 sm:bottom-6 right-[50px] sm:right-[200px] bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+              className="cursor-pointer fixed bottom-10 sm:bottom-6 right-[50px] sm:right-[200px] bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
             >
               Confirm
             </button>
@@ -164,13 +164,13 @@ const Summary = () => {
             <div className="flex justify-center gap-4">
               <button
                 onClick={confirmAndProceed}
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded cursor-pointer"
               >
                 Yes
               </button>
               <button
                 onClick={() => setShowModal(false)}
-                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+                className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded cursor-pointer"
               >
                 No
               </button>
