@@ -2,7 +2,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { GlobalProvider } from "./context/GlobalContext";
-
 import Home from "./components/Home";
 import Thanks from "./components/Thanks";
 import About from "./components/About";
